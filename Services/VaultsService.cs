@@ -6,29 +6,29 @@ using Keepr.Repositories;
 
 namespace Keepr.Services
 {
-  public class KeepsService
+  public class VaultsService
   {
-    private readonly KeepsRepository _repo;
-    public KeepsService(KeepsRepository repo)
+    private readonly VaultsRepository _repo;
+    public VaultsService(VaultsRepository repo)
     {
       _repo = repo;
     }
-    public IEnumerable<Keep> Get()
+    public IEnumerable<Vault> Get(string userId)
     {
-      return _repo.Get();
+      return _repo.Get(userId);
     }
-    public Keep GetById(int id, string userId)
+    public Vault GetById(int id, string userId)
     {
       return _repo.GetById(id, userId);
     }
 
-    public Keep Create(Keep newKeep)
+    public Vault Create(Vault newVault)
     {
-      return _repo.Create(newKeep);
+      return _repo.Create(newVault);
     }
-    public Keep Edit(Keep update)
+    public Vault Edit(Vault update)
     {
-      Keep exists = _repo.GetById(update.Id, update.UserId);
+      Vault exists = _repo.GetById(update.Id, update.UserId);
       if (exists == null) { throw new Exception("You can't do that?"); }
       return _repo.Edit(update);
     }

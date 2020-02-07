@@ -13,19 +13,21 @@ namespace Keepr.Controllers
 {
   [ApiController]
   [Route("api/[controller]")]
-  public class KeepsController : ControllerBase
+  public class VaultsController : ControllerBase
   {
-    private readonly KeepsService _ks;
-    public KeepsController(KeepsService ks)
+    private readonly VaultsService _vs;
+    public VaultsController(VaultsService vs)
     {
-      _ks = ks;
+      _vs = vs;
     }
     [HttpGet]
-    public ActionResult<IEnumerable<Keep>> Get()
+    [Authorize]
+    public ActionResult<IEnumerable<Vault>> Get()
     {
       try
       {
-        return Ok(_ks.Get());
+        var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        return Ok(_vs.Get(userId));
       }
       catch (Exception e)
       {
@@ -33,12 +35,13 @@ namespace Keepr.Controllers
       };
     }
     [HttpGet("{id}")]
-    public ActionResult<Keep> GetById(int id)
+    [Authorize]
+    public ActionResult<Vault> GetById(int id)
     {
       try
       {
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-        return Ok(_ks.GetById(id, userId));
+        return Ok(_vs.GetById(id, userId));
       }
       catch (Exception e)
       {
@@ -47,14 +50,14 @@ namespace Keepr.Controllers
     }
     [HttpPost]
     [Authorize]
-    public ActionResult<Keep> Post([FromBody] Keep newKeep)
+    public ActionResult<Vault> Post([FromBody] Vault newVault)
     {
       try
       {
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-        newKeep.UserId = userId;
-        newKeep.Id = 0;
-        return Ok(_ks.Create(newKeep));
+        newVault.UserId = userId;
+        newVault.Id = 0;
+        return Ok(_vs.Create(newVault));
       }
       catch (Exception e)
       {
@@ -63,14 +66,14 @@ namespace Keepr.Controllers
     }
     [HttpPut("{id}")]
     [Authorize]
-    public ActionResult<Keep> Edit([FromBody]Keep Update, int id)
+    public ActionResult<Vault> Edit([FromBody]Vault Update, int id)
     {
       try
       {
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
         Update.UserId = userId;
         Update.Id = id;
-        return _ks.Edit(Update);
+        return _vs.Edit(Update);
       }
       catch (Exception e)
       {
@@ -84,7 +87,7 @@ namespace Keepr.Controllers
       try
       {
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-        _ks.Delete(id, userId);
+        _vs.Delete(id, userId);
         return "deleted";
       }
       catch (Exception e)
