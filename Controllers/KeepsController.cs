@@ -37,7 +37,15 @@ namespace Keepr.Controllers
     {
       try
       {
-        var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        string userId;
+        try
+        {
+          userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        }
+        catch (Exception error)
+        {
+          userId = " ";
+        }
         return Ok(_ks.GetById(id, userId));
       }
       catch (Exception e)
@@ -53,7 +61,6 @@ namespace Keepr.Controllers
       {
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
         newKeep.UserId = userId;
-        newKeep.Id = 0;
         return Ok(_ks.Create(newKeep));
       }
       catch (Exception e)
@@ -85,7 +92,7 @@ namespace Keepr.Controllers
       {
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
         _ks.Delete(id, userId);
-        return "deleted";
+        return Ok("deleted");
       }
       catch (Exception e)
       {

@@ -19,7 +19,9 @@ namespace Keepr.Services
     }
     public Vault GetById(int id, string userId)
     {
-      return _repo.GetById(id, userId);
+      Vault v = _repo.GetById(id, userId);
+      if (v == null) { throw new Exception("Can't get that vault."); }
+      return v;
     }
 
     public Vault Create(Vault newVault)
@@ -28,13 +30,14 @@ namespace Keepr.Services
     }
     public Vault Edit(Vault update)
     {
-      Vault exists = _repo.GetById(update.Id, update.UserId);
-      if (exists == null) { throw new Exception("You can't do that?"); }
-      return _repo.Edit(update);
+      int v = _repo.Edit(update);
+      if (v == 0) { throw new Exception("You can't do that?"); }
+      return update;
     }
     public void Delete(int id, string userId)
     {
-      _repo.Delete(id, userId);
+      int i = _repo.Delete(id, userId);
+      if (i == 0) { throw new Exception("You can't do that."); }
     }
   }
 }

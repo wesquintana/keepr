@@ -19,7 +19,9 @@ namespace Keepr.Services
     }
     public Keep GetById(int id, string userId)
     {
-      return _repo.GetById(id, userId);
+      Keep k = _repo.GetById(id, userId);
+      if (k == null) { throw new Exception("Can't get that keep."); }
+      return k;
     }
 
     public Keep Create(Keep newKeep)
@@ -28,13 +30,14 @@ namespace Keepr.Services
     }
     public Keep Edit(Keep update)
     {
-      Keep exists = _repo.GetById(update.Id, update.UserId);
-      if (exists == null) { throw new Exception("You can't do that?"); }
-      return _repo.Edit(update);
+      int k = _repo.Edit(update);
+      if (k == 0) { throw new Exception("You can't do that."); }
+      return update;
     }
     public void Delete(int id, string userId)
     {
-      _repo.Delete(id, userId);
+      int k = _repo.Delete(id, userId);
+      if (k == 0) { throw new Exception("You can't do that."); }
     }
   }
 }

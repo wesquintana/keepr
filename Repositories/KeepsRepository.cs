@@ -31,16 +31,16 @@ namespace Keepr.Repositories
     {
       string sql = @"
             INSERT INTO keeps 
-            (name, description, img, isPrivate, views, shares, keeps) 
+            (name, description, img, isPrivate, views, shares, keeps, userId) 
             VALUES 
-            (@Name, @Description, @Img, @IsPrivate, @Views, @Shares, @Keeps);
+            (@Name, @Description, @Img, @IsPrivate, @Views, @Shares, @Keeps, @UserId);
             SELECT LAST_INSERT_ID();
             ";
       int id = _db.ExecuteScalar<int>(sql, KeepData);
       KeepData.Id = id;
       return KeepData;
     }
-    internal Keep Edit(Keep KeepData)
+    internal int Edit(Keep KeepData)
     {
       string sql = @"UPDATE keeps 
       SET
@@ -51,14 +51,14 @@ namespace Keepr.Repositories
        views=@Views,
        shares=@Shares,
        keeps=@Keeps
-       WHERE id=@Id AND userId = @UserId;
+       WHERE (id=@Id AND userId = @UserId);
       ";
-      return _db.ExecuteScalar<Keep>(sql, KeepData);
+      return _db.Execute(sql, KeepData);
     }
-    internal void Delete(int id, string userId)
+    internal int Delete(int id, string userId)
     {
       string sql = @"DELETE FROM keeps WHERE id=@id AND userId = @userId";
-      _db.Execute(sql, new { id, userId });
+      return _db.Execute(sql, new { id, userId });
     }
   }
 }
