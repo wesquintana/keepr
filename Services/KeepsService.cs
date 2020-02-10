@@ -34,6 +34,15 @@ namespace Keepr.Services
       if (k == 0) { throw new Exception("You can't do that."); }
       return update;
     }
+    public int ViewKeep(int id)
+    {
+      return _repo.ViewKeep(id);
+
+    }
+    public int KeepKeep(int id)
+    {
+      return _repo.KeepKeep(id);
+    }
     public void Delete(int id, string userId)
     {
       int k = _repo.Delete(id, userId);

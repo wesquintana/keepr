@@ -55,6 +55,24 @@ namespace Keepr.Repositories
       ";
       return _db.Execute(sql, KeepData);
     }
+    internal int ViewKeep(int id)
+    {
+      string sql = @"UPDATE keeps
+      SET
+      views=views+1
+      WHERE id=@id;
+      SELECT views FROM keeps WHERE id=@id";
+      return _db.ExecuteScalar<int>(sql, new { id });
+    }
+    internal int KeepKeep(int id)
+    {
+      string sql = @"UPDATE keeps
+      SET
+      keeps=keeps+1
+      WHERE id=@id;
+      SELECT keeps FROM keeps WHERE id=@id";
+      return _db.ExecuteScalar<int>(sql, new { id });
+    }
     internal int Delete(int id, string userId)
     {
       string sql = @"DELETE FROM keeps WHERE id=@id AND userId = @userId";

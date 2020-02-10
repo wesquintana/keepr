@@ -84,6 +84,31 @@ namespace Keepr.Controllers
         return BadRequest(e.Message);
       }
     }
+    [HttpPut("{id}/view")]
+    public ActionResult<int> ViewKeep(int id)
+    {
+      try
+      {
+        return _ks.ViewKeep(id);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+    [HttpPut("{id}/keep")]
+    [Authorize]
+    public ActionResult<int> KeepKeep(int id)
+    {
+      try
+      {
+        return _ks.KeepKeep(id);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
     [HttpDelete("{id}")]
     [Authorize]
     public ActionResult<String> Delete(int id)
