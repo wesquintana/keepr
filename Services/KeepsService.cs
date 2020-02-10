@@ -23,6 +23,10 @@ namespace Keepr.Services
       if (k == null) { throw new Exception("Can't get that keep."); }
       return k;
     }
+    public IEnumerable<Keep> GetByUser(string userId)
+    {
+      return _repo.GetByUser(userId);
+    }
 
     public Keep Create(Keep newKeep)
     {

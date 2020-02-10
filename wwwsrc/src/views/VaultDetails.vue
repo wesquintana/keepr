@@ -3,15 +3,21 @@
     <div class="row">
       <div class="col">{{activeVault.name}}: {{activeVault.description}}</div>
     </div>
-    <div class="row">
+    <div class="row" v-if="activeKeeps">
       <div
         class="col-3 keep-cols"
-        v-for="keep in keeps"
+        v-for="keep in activeKeeps"
         :key="keep.id"
         :style="'height: 25vw; background-image: url('+keep.img+'); background-size: cover;'"
       >
         <h1 class="keep-text">{{keep.name}}</h1>
         <h3 class="keep-text">{{keep.description}}</h3>
+
+        <i
+          class="fas fa-times delete-icon"
+          style="position: absolute; bottom: 0; right: 0;"
+          @click="removeKeepFromVault(activeVault.id,keep.id)"
+        ></i>
       </div>
     </div>
   </div>
@@ -29,12 +35,26 @@ export default {
     activeVault() {
       return this.$store.state.activeVault;
     },
-    keeps() {
-      return this.$store.state.keeps;
+    activeKeeps() {
+      return this.$store.state.activeKeeps;
     }
   },
-  methods: {}
+  methods: {
+    removeKeepFromVault(vaultId, keepId) {
+      this.$store.dispatch("removeKeepFromVault", { vaultId, keepId });
+    }
+  }
 };
 </script>
 <style>
+.delete-icon {
+  position: absolute;
+  right: 0;
+  color: red;
+  bottom: 0;
+  font-size: 2em;
+}
+.delete-icon:hover {
+  cursor: pointer;
+}
 </style>

@@ -94,12 +94,39 @@
         </form>
       </div>
     </div>
+    <div class="row">
+      <div class="col-12 border-top border-secondary">
+        <h2 class>My Vaults:</h2>
+      </div>
+    </div>
     <div class="row scroll-x">
       <div class="col-3" v-for="vault in vaults" :key="vault.id">
         <router-link :to="'/vaults/'+vault.id">
-          <h5>{{vault.name}}</h5>
-          <p>{{vault.description}}</p>
+          <h5 class="mb-4">{{vault.name}}</h5>
+          <p class="mt-4">{{vault.description}}</p>
         </router-link>
+        <button class="btn btn-danger keep-buttons mb-2" @click="deleteVault(vault.id)">Delete</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <h2>My Keeps:</h2>
+      </div>
+    </div>
+    <div class="row scroll-x">
+      <div
+        class="col-2 keep-cols"
+        v-for="keep in myKeeps"
+        :key="keep.id"
+        :style="'height: 16vw; background-image: url('+keep.img+'); background-size: cover; padding: 0 0;'"
+      >
+        <h3 class="keep-text">{{keep.name}}</h3>
+        <h5 class="keep-text">{{keep.description}}</h5>
+        <button
+          class="btn btn-danger keep-buttons"
+          style="position: absolute; bottom: 0;"
+          @click="deleteKeep(keep.id)"
+        >Delete</button>
       </div>
     </div>
   </div>
@@ -125,6 +152,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("getResource", { name: "vaults" });
+    this.$store.dispatch("getMyKeeps");
   },
   methods: {
     createKeep() {
@@ -144,6 +172,12 @@ export default {
         name: "",
         description: ""
       };
+    },
+    deleteKeep(keepId) {
+      this.$store.dispatch("deleteKeep", keepId);
+    },
+    deleteVault(vaultId) {
+      this.$store.dispatch("deleteVault", vaultId);
     }
   },
   computed: {
@@ -152,6 +186,9 @@ export default {
     },
     vaults() {
       return this.$store.state.vaults;
+    },
+    myKeeps() {
+      return this.$store.state.myKeeps;
     }
   }
 };
@@ -192,7 +229,6 @@ export default {
 }
 .scroll-x {
   overflow-x: auto;
-  white-space: nowrap;
   flex-wrap: nowrap;
 }
 .scroll-x::-webkit-scrollbar {

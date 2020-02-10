@@ -16,7 +16,26 @@
         <h3 class="keep-text">{{keep.description}}</h3>
         <div class="d-flex keep-buttons-div">
           <router-link class="btn btn-info keep-buttons" :to="'/keeps/'+keep.id" tag="button">View</router-link>
-          <button class="btn btn-warning keep-buttons">Keep</button>
+          <button
+            class="btn btn-warning keep-buttons"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >Keep</button>
+          <div
+            class="dropdown-menu border dropdown-menu-right"
+            aria-labelledby="dropdownMenuButton"
+          >
+            <a
+              v-for="vault in vaults"
+              :key="vault.id"
+              :to="{name: 'profile', params: {id: vault._id}}"
+              class="dropdown-item"
+              @click="addKeepToVault(vault.id,keep.id)"
+            >{{vault.name}}</a>
+          </div>
           <button class="btn btn-success keep-buttons">Share</button>
         </div>
       </div>
@@ -29,6 +48,7 @@ export default {
   name: "home",
   mounted() {
     this.$store.dispatch("getResource", { name: "keeps" });
+    this.$store.dispatch("getResource", { name: "vaults" });
   },
   computed: {
     user() {
@@ -36,11 +56,17 @@ export default {
     },
     keeps() {
       return this.$store.state.keeps;
+    },
+    vaults() {
+      return this.$store.state.vaults;
     }
   },
   methods: {
     logout() {
       this.$store.dispatch("logout");
+    },
+    addKeepToVault(vaultId, keepId) {
+      this.$store.dispatch("addKeepToVault", { vaultId, keepId });
     }
   }
 };

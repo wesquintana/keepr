@@ -19,6 +19,8 @@ export default new Vuex.Store({
   state: {
     keeps: [],
     activeKeep: {},
+    activeKeeps: [],
+    myKeeps: [],
     vaults: [],
     activeVault: {}
   },
@@ -31,6 +33,18 @@ export default new Vuex.Store({
     },
     addResourceToArray(state, payload) {
       state[payload.name].push(payload.data);
+    },
+    removeKeepFromVault(state, id) {
+      let index = state.activeKeeps.findIndex(k => k.id == id);
+      state.activeKeeps.splice(index, 1);
+    },
+    deleteKeep(state, id) {
+      let index = state.myKeeps.findIndex(k => k.id == id);
+      state.myKeeps.splice(index, 1);
+    },
+    deleteVault(state, id) {
+      let index = state.vaults.findIndex(v => v.id == id);
+      state.vaults.splice(index, 1);
     }
   },
   actions: {
@@ -57,7 +71,7 @@ export default new Vuex.Store({
     },
     async getKeepsByVaultId({ commit, dispatch }, id) {
       let data = await api.get("vaultkeeps/" + id + "/keeps");
-      commit("setResource", { name: "vaults", data: data.data });
+      commit("setResource", { name: "activeKeeps", data: data.data });
     },
     async viewKeep({ commit, dispatch }, id) {
       let data = await api.put("keeps/" + id + "/view");
@@ -70,6 +84,27 @@ export default new Vuex.Store({
     async createVault({ commit, dispatch }, vault) {
       let data = await api.post("vaults", vault);
       commit("addResourceToArray", { name: "vaults", data: data.data });
+    },
+    async addKeepToVault({ commit, dispatch }, payload) {
+      let data = await api.post("vaultkeeps", payload);
+    },
+    async removeKeepFromVault({ commit, dispatch }, payload) {
+      let data = await api.delete(
+        "vaultkeeps/" + payload.vaultId + "/keeps/" + payload.keepId
+      );
+      commit("removeKeepFromVault", payload.keepId);
+    },
+    async getMyKeeps({ commit, dispatch }) {
+      let data = await api.get("/keeps/user");
+      commit("setResource", { name: "myKeeps", data: data.data });
+    },
+    async deleteKeep({ commit, dispatch }, id) {
+      await api.delete("/keeps/" + id);
+      commit("deleteKeep", id);
+    },
+    async deleteVault({ commit, dispatch }, id) {
+      await api.delete("/vaults/" + id);
+      commit("deleteVault", id);
     }
   }
 });
