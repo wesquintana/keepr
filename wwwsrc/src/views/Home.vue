@@ -1,8 +1,8 @@
 <template>
   <div class="home container-fluid">
     <div class="row">
-      <div class="col-12">
-        <h1>Welcome Home</h1>
+      <div class="col-12 db-title">
+        <h1 class="mt-3 mb-3">Welcome Home</h1>
       </div>
     </div>
     <div class="row">
@@ -117,5 +117,9 @@ export default {
 }
 .keep-buttons:hover {
   opacity: 1;
+}
+.db-title {
+  background-color: rgb(245, 245, 245);
+  border: 1px solid rgb(225, 225, 225);
 }
 </style>

@@ -117,9 +117,13 @@
       </div>
     </div>
     <div v-if="vaults" class="row scroll-x">
-      <div class="col-3" v-for="vault in vaults" :key="vault.id">
+      <div
+        class="col-3 border border-dark vault-cols"
+        v-for="vault in vaults"
+        :key="vault.id"
+      >
         <router-link :to="'/vaults/' + vault.id">
-          <h5 class="mb-4">{{ vault.name }}</h5>
+          <h5 class="mb-4 text-center">{{ vault.name }}</h5>
           <p class="mt-4">{{ vault.description }}</p>
         </router-link>
         <button
@@ -268,5 +272,16 @@ export default {
 }
 .scroll-x::-webkit-scrollbar-thumb:hover {
   background-color: rgba(100, 100, 100, 0.9);
+}
+a {
+  color: dimgrey;
+}
+a:hover {
+  text-decoration: none;
+  color: black;
+}
+.vault-cols {
+  box-shadow: 10px 10px 5px grey;
+  margin-bottom: 10px;
 }
 </style>

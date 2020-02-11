@@ -49,12 +49,14 @@ export default new Vuex.Store({
   },
   actions: {
     setBearer({}, bearer) {
-      api.defaults.headers.authorization = bearer;
+      console.log("SETTING THE BEARER", bearer);
+      api.defaults.headers.Authorization = bearer;
     },
-    resetBearer() {
-      api.defaults.headers.authorization = "";
-    },
+    // resetBearer() {
+    //   api.defaults.headers.Authorization = "";
+    // },
     async getResource({ commit, dispatch }, payload) {
+      console.log("REQUESTING", payload.name);
       let data = await api.get(payload.name);
       payload.data = data.data;
       commit("setResource", payload);
