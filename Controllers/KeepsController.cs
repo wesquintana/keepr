@@ -123,6 +123,18 @@ namespace Keepr.Controllers
         return BadRequest(e.Message);
       }
     }
+    [HttpPut("{id}/share")]
+    public ActionResult<int> ShareKeep(int id)
+    {
+      try
+      {
+        return _ks.ShareKeep(id);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
     [HttpDelete("{id}")]
     [Authorize]
     public ActionResult<String> Delete(int id)

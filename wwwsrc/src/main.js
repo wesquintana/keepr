@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import Clipboard from "v-clipboard";
 import { Auth0Plugin, onAuth } from "@bcwdev/auth0-vue";
 import { domain, clientId, audience } from "./authConfig";
 
@@ -17,6 +18,7 @@ Vue.use(Auth0Plugin, {
     );
   }
 });
+Vue.use(Clipboard);
 
 new Vue({
   router,

@@ -78,6 +78,15 @@ namespace Keepr.Repositories
       SELECT keeps FROM keeps WHERE id=@id";
       return _db.ExecuteScalar<int>(sql, new { id });
     }
+    internal int ShareKeep(int id)
+    {
+      string sql = @"UPDATE keeps
+      SET
+      shares=shares+1
+      WHERE id=@id;
+      SELECT shares FROM keeps WHERE id=@id";
+      return _db.ExecuteScalar<int>(sql, new { id });
+    }
     internal int Delete(int id, string userId)
     {
       string sql = @"DELETE FROM keeps WHERE id=@id AND userId = @userId";

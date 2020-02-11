@@ -10,12 +10,21 @@
         class="col-3 keep-cols"
         v-for="keep in keeps"
         :key="keep.id"
-        :style="'height: 25vw; background-image: url('+keep.img+'); background-size: cover;'"
+        :style="
+          'height: 25vw; background-image: url(' +
+            keep.img +
+            '); background-size: cover;'
+        "
       >
-        <h1 class="keep-text">{{keep.name}}</h1>
-        <h3 class="keep-text">{{keep.description}}</h3>
+        <h1 class="keep-text">{{ keep.name }}</h1>
+        <h3 class="keep-text">{{ keep.description }}</h3>
         <div class="d-flex keep-buttons-div">
-          <router-link class="btn btn-info keep-buttons" :to="'/keeps/'+keep.id" tag="button">View</router-link>
+          <router-link
+            class="btn btn-info keep-buttons"
+            :to="'/keeps/' + keep.id"
+            tag="button"
+            >View</router-link
+          >
           <button
             class="btn btn-warning keep-buttons"
             type="button"
@@ -23,7 +32,9 @@
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
-          >Keep</button>
+          >
+            Keep
+          </button>
           <div
             class="dropdown-menu border dropdown-menu-right"
             aria-labelledby="dropdownMenuButton"
@@ -31,12 +42,19 @@
             <a
               v-for="vault in vaults"
               :key="vault.id"
-              :to="{name: 'profile', params: {id: vault._id}}"
+              :to="{ name: 'profile', params: { id: vault._id } }"
               class="dropdown-item"
-              @click="addKeepToVault(vault.id,keep.id)"
-            >{{vault.name}}</a>
+              @click="addKeepToVault(vault.id, keep.id)"
+              >{{ vault.name }}</a
+            >
           </div>
-          <button class="btn btn-success keep-buttons">Share</button>
+          <button
+            class="btn btn-success keep-buttons"
+            v-clipboard="() => location + '\#/keeps/' + keep.id"
+            @click="share(keep.id)"
+          >
+            Share
+          </button>
         </div>
       </div>
     </div>
@@ -59,6 +77,9 @@ export default {
     },
     vaults() {
       return this.$store.state.vaults;
+    },
+    location() {
+      return location.host;
     }
   },
   methods: {
@@ -67,6 +88,9 @@ export default {
     },
     addKeepToVault(vaultId, keepId) {
       this.$store.dispatch("addKeepToVault", { vaultId, keepId });
+    },
+    share(id) {
+      this.$store.dispatch("shareKeep", id);
     }
   }
 };

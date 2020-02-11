@@ -47,6 +47,10 @@ namespace Keepr.Services
     {
       return _repo.KeepKeep(id);
     }
+    public int ShareKeep(int id)
+    {
+      return _repo.ShareKeep(id);
+    }
     public void Delete(int id, string userId)
     {
       int k = _repo.Delete(id, userId);

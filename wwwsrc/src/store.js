@@ -77,6 +77,12 @@ export default new Vuex.Store({
       let data = await api.put("keeps/" + id + "/view");
       commit("setViews", data.data);
     },
+    async keepKeep({ commit, dispatch }, id) {
+      let data = await api.put("keeps/" + id + "/keep");
+    },
+    async shareKeep({ commit, dispatch }, id) {
+      let data = await api.put("keeps/" + id + "/share");
+    },
     async createKeep({ commit, dispatch }, keep) {
       let data = await api.post("keeps", keep);
       commit("addResourceToArray", { name: "keeps", data: data.data });
@@ -87,6 +93,7 @@ export default new Vuex.Store({
     },
     async addKeepToVault({ commit, dispatch }, payload) {
       let data = await api.post("vaultkeeps", payload);
+      dispatch("keepKeep", payload.keepId);
     },
     async removeKeepFromVault({ commit, dispatch }, payload) {
       let data = await api.delete(
