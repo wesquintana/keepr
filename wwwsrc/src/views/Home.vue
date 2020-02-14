@@ -6,55 +6,57 @@
       </div>
     </div>
     <div class="row">
-      <div
-        class="col-3 keep-cols"
-        v-for="keep in keeps"
-        :key="keep.id"
-        :style="
-          'height: 25vw; background-image: url(' +
-            keep.img +
-            '); background-size: cover;'
-        "
-      >
-        <h1 class="keep-text">{{ keep.name }}</h1>
-        <h3 class="keep-text">{{ keep.description }}</h3>
-        <div class="d-flex keep-buttons-div">
-          <router-link
-            class="btn btn-info keep-buttons"
-            :to="'/keeps/' + keep.id"
-            tag="button"
-            >View</router-link
-          >
-          <button
-            class="btn btn-warning keep-buttons"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Keep
-          </button>
-          <div
-            class="dropdown-menu border dropdown-menu-right"
-            aria-labelledby="dropdownMenuButton"
-          >
-            <a
-              v-for="vault in vaults"
-              :key="vault.id"
-              :to="{ name: 'profile', params: { id: vault._id } }"
-              class="dropdown-item"
-              @click="addKeepToVault(vault.id, keep.id)"
-              >{{ vault.name }}</a
-            >
+      <div class="col-3 keep-cols" v-for="keep in keeps" :key="keep.id">
+        <div class="card mt-4" style="width: 18rem; max-height:inherit">
+          <img
+            :src="keep.img"
+            class="card-img-top"
+            alt="..."
+            style=""
+            onerror="this.style.display='none'"
+          />
+          <div class="card-body">
+            <h5 class="card-title">{{ keep.name }}</h5>
+            <p class="card-text card-desc">{{ keep.description }}</p>
+            <div class="keep-buttons-div">
+              <router-link
+                class="btn btn-info keep-buttons"
+                :to="'/keeps/' + keep.id"
+                tag="button"
+                >View</router-link
+              >
+              <button
+                class="btn btn-warning keep-buttons"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Keep
+              </button>
+              <div
+                class="dropdown-menu border dropdown-menu-right"
+                aria-labelledby="dropdownMenuButton"
+              >
+                <a
+                  v-for="vault in vaults"
+                  :key="vault.id"
+                  :to="{ name: 'profile', params: { id: vault._id } }"
+                  class="dropdown-item"
+                  @click="addKeepToVault(vault.id, keep.id)"
+                  >{{ vault.name }}</a
+                >
+              </div>
+              <button
+                class="btn btn-success keep-buttons"
+                v-clipboard="() => location + '\#/keeps/' + keep.id"
+                @click="share(keep.id)"
+              >
+                Share
+              </button>
+            </div>
           </div>
-          <button
-            class="btn btn-success keep-buttons"
-            v-clipboard="() => location + '\#/keeps/' + keep.id"
-            @click="share(keep.id)"
-          >
-            Share
-          </button>
         </div>
       </div>
     </div>
@@ -102,16 +104,15 @@ export default {
   font-weight: bold;
   color: whitesmoke;
 }
-.keep-cols {
-  padding: 0 0;
-}
+
 .keep-buttons-div {
   position: absolute;
   bottom: 0;
+  left: 0;
   width: -webkit-fill-available;
 }
 .keep-buttons {
-  width: -webkit-fill-available;
+  width: 33.334%;
   opacity: 0.7;
   border-radius: 0 0 0 0;
 }
@@ -121,5 +122,11 @@ export default {
 .db-title {
   background-color: rgb(245, 245, 245);
   border: 1px solid rgb(225, 225, 225);
+}
+.card-img-top {
+  width: auto;
+}
+.card-desc {
+  margin-bottom: 2rem;
 }
 </style>

@@ -25,7 +25,7 @@
           @click="removeKeepFromVault(activeVault.id, keep.id)"
         ></i
         ><router-link
-          class="btn btn-info keep-buttons"
+          class="btn btn-info view-button"
           style="position: absolute; bottom: 3vh; right: 0;"
           :to="'/keeps/' + keep.id"
           tag="button"
@@ -69,5 +69,10 @@ export default {
 }
 .delete-icon:hover {
   cursor: pointer;
+}
+.view-button {
+  width: -webkit-fill-available;
+  opacity: 0.7;
+  border-radius: 0 0 0 0;
 }
 </style>
